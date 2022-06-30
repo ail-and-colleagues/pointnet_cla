@@ -70,8 +70,6 @@ class Data_Seq(tf.keras.utils.Sequence):
         x = x.vertices
         samples_id = np.random.choice(np.arange(x.shape[0]), self.num_points, replace=False)
         x = x[samples_id]
-
-        # y = tf.keras.utils.to_categorical(y, 4)
         return x, y, i 
 
 if __name__ == "__main__":

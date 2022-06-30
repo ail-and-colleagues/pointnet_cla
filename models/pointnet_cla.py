@@ -1,8 +1,9 @@
-# https://keras.io/examples/vision/pointnet/
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
+
+# https://keras.io/examples/vision/pointnet/
 
 def conv_bn(x, filters):
     x = layers.Conv1D(filters, kernel_size=1, padding="valid")(x)
