@@ -13,9 +13,11 @@
 ## install
 必要なパッケージ（ライブラリ）はrequirements.txtにまとめてあります。Terminalより次のコマンドを実行するとインストールできます。
 
+````
 ```
 pip install -r requirements.txt
 ```
+````
 
 必要に応じてCUDAやCuDNNもインストール・設定ください（GPUでなくCPUで実行するならCUDAやCuDNNは不要です）。
 
@@ -40,9 +42,11 @@ if __name__ == "__main__":
 ```
 
 実行時の引数は設定してないので、Visual Studio Codeで開いて「デバックなしで開始」するか、Terminalから、
+````
 ```
 python trimesh_dataset_gen.py
 ```
+````
 すれば実行できます。実行を終えると、datasetフォルダの中に以下のように学習用データが生成されるはずです。「trimesh_primitives」のなかがここで用いる学習データセットです。
 
 \# 同じような構成で別の点群な学習用データを作成すればそのデータで学習できます。
@@ -98,9 +102,11 @@ tf・kerasには[data_sequence](https://www.tensorflow.org/api_docs/python/tf/ke
 
 train＿cla.pyにも実行時の引数は設定してないので、Visual Studio Codeで開いて「デバックなしで開始」するか、Terminalから、
 
+````
 ```
 python train＿cla.py
 ```
+````
 
 すれば実行できます。
 
