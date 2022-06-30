@@ -103,9 +103,7 @@ tf・kerasには[data_sequence](https://www.tensorflow.org/api_docs/python/tf/ke
 train＿cla.pyにも実行時の引数は設定してないので、Visual Studio Codeで開いて「デバックなしで開始」するか、Terminalから、
 
 ````
-```
 python train＿cla.py
-```
 ````
 
 すれば実行できます。
