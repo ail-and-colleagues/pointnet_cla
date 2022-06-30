@@ -1,5 +1,5 @@
 # pointnet_cla
-[trimesh](https://trimsh.org/index.html)で作成できるbox、cupsuleなどのプリミティブ形状を[pointnet](https://arxiv.org/abs/1612.00593)で分類するサンプル。
+[trimesh](https://trimsh.org/index.html)で作成できるbox、cupsuleなどのプリミティブ形状を[pointnet](https://arxiv.org/abs/1612.00593)で分類するサンプル
 
 ゼミでのネタとして作成したものです。
 屋上屋を重ねるかたちにはなりますが、建築学生含む情報分野が専門でない人向けに：
@@ -45,6 +45,8 @@ python trimesh_dataset_gen.py
 ```
 すれば実行できます。実行を終えると、datasetフォルダの中に以下のように学習用データが生成されるはずです。「trimesh_primitives」のなかがここで用いる学習データセットです。
 
+\# 同じような構成で別の点群な学習用データを作成すればそのデータで学習できます。
+
 ```
 dataset/
 |--trimesh_primitives
@@ -87,7 +89,22 @@ tf・kerasには[data_sequence](https://www.tensorflow.org/api_docs/python/tf/ke
 ```
 
 #### training
-以上のnetwork、data_sequenceを使い学習を行っています。[tf.keras.callbacks.EarlyStopping](https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/EarlyStopping)をcallbackに設定しているので、こちらではEpoch: 10でearly stoppingします。validationに対するaccracyは95%程度となりました。
+以上のnetwork、data_sequenceを使い学習を行います。なお、以下で学習用データの読み込みと共有を行うようにしているので、ここを変えれば別のデータセットを使えます。
+
+```
+    train_seq = Data_Seq("./dataset/trimesh_primitives/train", num_point, batch_size, ite_size)
+    val_seq = Data_Seq("./dataset/trimesh_primitives/val", num_point, batch_size, 1)
+```
+
+train＿cla.pyにも実行時の引数は設定してないので、Visual Studio Codeで開いて「デバックなしで開始」するか、Terminalから、
+
+```
+python train＿cla.py
+```
+
+すれば実行できます。
+
+[tf.keras.callbacks.EarlyStopping](https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/EarlyStopping)をcallbackに設定しているので、こちらではEpoch: 10でearly stoppingします。validationに対するaccracyは95%程度となりました。
 
 ```
 sparse_categorical_accuracy: 0.9918 - val_loss: 1.2997 - val_sparse_categorical_accuracy: 0.9502 - lr: 5.0000e-04
@@ -96,9 +113,9 @@ sparse_categorical_accuracy: 0.9918 - val_loss: 1.2997 - val_sparse_categorical_
 boxは兎も角、cylinderとcapsule、scaled_sphereはもう少し迷うかと思ったのですが、なかなかの正解率となりました。
 
 ## sidenote
-[情報シンポ2021](https://aijisa.org/2021/)では、当時M2の福本くんが、住宅作品5作品（ミース・ファン・デル・ローエ設計の「トゥーゲンハット邸」「ファンズワース邸」「レムケ邸」と、ルイス・カーン設計の「エシェリック邸」「フィッシャー邸」）の3D isovist（点群）をpointnetを使ってクラスタリングすることを行いました。この予備的な検討としてそもそも「この3D isovist（点群）はどの住宅作品のものか？」を推定するclassificaitonを行ったのですが、ここでも90％を超える正解率でした。評価用含む学習用データが人工的に作成しているので学習を行わせやすいシチュエーションだとは思いますが、特徴的でない視点のものは分類できずもう少し正解率が低いと予想していたので意外な精度でした。
+[情報シンポ2021](https://aijisa.org/2021/)では、当時M2の福本くんが、住宅作品5作品（ミース・ファン・デル・ローエ設計の「トゥーゲンハット邸」「ファンズワース邸」「レムケ邸」と、ルイス・カーン設計の「エシェリック邸」「フィッシャー邸」）の3D isovist（点群）をpointnetを使ってクラスタリングすることを行いました。この予備的な検討としてそもそも当時UG04年の前田くんに「この3D isovist（点群）はどの住宅作品のものか？」を推定するclassificaitonを行ってもらったのですが、ここでの90％を超える正解率でした。評価用含む学習用データが人工的に作成しているので学習を行わせやすいシチュエーションだとは思いますが、特徴的でない視点のものは分類できずもう少し正解率が低いと予想していたので意外な精度でした。
 
-このようなpointnet（含む深層学習ネットワーク）による建築の理解については引き続き研究を進めていく予定です。
+このようなpointnet（含む深層学習ネットワーク）による建築の理解については、引き続き研究を進めていきたいと思っています。
 
 ## links
 * [trimesh](https://trimsh.org/index.html)
