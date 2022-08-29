@@ -27,18 +27,7 @@ pip install -r requirements.txt
 
 mainのあたり（↓）にてdataset下のフォルダ名や、train・valのデータ数、点群の点数などを指定しています。辞書型をとるprimitivesがちょっとややこしいですが、keyに「"box"」のように意味、valueに「create_box」のように対応する点群を生成するための関数（のオブジェクト）が入っています。
 
-```Python
-if __name__ == "__main__":
-    dataset_name = "trimesh_primitives"
-    primitives = {
-        "box": create_box,
-        "capsule": create_capsule,
-        "cylinder": create_cylinder, 
-        "scaled_sphere": create_scaled_sphere}
-
-    train_data_num, val_data_num = 100, 20
-    point_num = 512
-```
+https://github.com/ail-and-colleagues/pointnet_cla/blob/c360bac2710839a416f448139fd900b9f7b23316/trimesh_dataset_gen.py#L114-L120
 
 実行時の引数は設定してないので、Visual Studio Codeで開いて「デバックなしで開始」するか、Terminalから、
 
@@ -77,26 +66,12 @@ dataset/
 tf・kerasには[data_sequence](https://www.tensorflow.org/api_docs/python/tf/keras/utils/Sequence)と呼ばれる、学習時に学習用のデータ共有を扱うクラスがあり、ここではこれを使い学習を行っています。実装はloaders/data.loader.pyに書いてあります。
 
 具体的には、生成時に点群データ（.ply）へのパスとそれぞれのラベルを保持しておき、batch分のデータを作る際に呼ばれる__getitem__において、batch分Preprocessを実行してデータを作っています。Preprocessでは点群データ（.ply）へのパスから一つ選んだうえ、それを読み込んだ上で必要数の点をランダムにサンプリングしています。
-```Python
-    def Preprocess(self, i):
-        rind = np.random.randint(len(self.data_path))
-        data_path = self.data_path[rind]
-        y = self.data_label[rind]
-        x = trimesh.load(data_path)
-        ## augment data here as appropriate
-        x = x.vertices
-        samples_id = np.random.choice(np.arange(x.shape[0]), self.num_points, replace=False)
-        x = x[samples_id]
-        return x, y, i 
-```
+https://github.com/ail-and-colleagues/pointnet_cla/blob/c360bac2710839a416f448139fd900b9f7b23316/loaders/data_loader.py#L64-L73
 
 #### training
 以上のnetwork、data_sequenceを使い学習を行います。なお、以下で学習用データの読み込みと共有を行うようにしているので、ここを変えれば別のデータセットを使えます。
 
-```Python
-    train_seq = Data_Seq("./dataset/trimesh_primitives/train", num_point, batch_size, ite_size)
-    val_seq = Data_Seq("./dataset/trimesh_primitives/val", num_point, batch_size, 1)
-```
+https://github.com/ail-and-colleagues/pointnet_cla/blob/c360bac2710839a416f448139fd900b9f7b23316/train_cla.py#L15-L16
 
 train＿cla.pyにも実行時の引数は設定してないので、Visual Studio Codeで開いて「デバックなしで開始」するか、Terminalから、
 
