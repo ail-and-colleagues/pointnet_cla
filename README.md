@@ -59,7 +59,7 @@ dataset/
 `-- .gitkeep
 ```
 
-### train＿cla.py
+### train_cla.py
 #### network
 ネットワークは[kerasのチュートリアル](https://keras.io/examples/vision/pointnet/)を使っています。実装そのものはmodels/pointnet_cla.pyに書いてあります。チュートリアルでは入力された点群から座標変換行列（回転行列）を推定するt-netが関数（t-net）内でlayerを連ねるかたちで定義されていますが、summaryを出力した際に分けて表示されるように別のモデル（tnet(tf.keras.Model)）として定義しています。
 #### data_sequence
